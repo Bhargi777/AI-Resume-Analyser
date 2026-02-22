@@ -1,7 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ScoreChart } from '@/components/score-chart';
+import dynamic from 'next/dynamic';
 import { ResumeAnalysis } from '@/ai/schema';
+import { Loader2 } from 'lucide-react';
+
+const ScoreChart = dynamic(() => import('@/components/score-chart').then(mod => mod.ScoreChart), {
+    loading: () => <div className="h-[300px] w-full flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>,
+    ssr: false
+});
 
 interface DashboardProps {
     analysis: ResumeAnalysis;
