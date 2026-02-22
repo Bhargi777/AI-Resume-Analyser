@@ -3,6 +3,9 @@ import { AIClient } from '@/ai/client';
 import { PROMPTS } from '@/ai/prompts';
 import { z } from 'zod';
 
+export const runtime = 'edge';
+export const maxDuration = 45;
+
 const analyzeRequestSchema = z.object({
     text: z.string().min(10, 'Resume text is too short to analyze.'),
 });

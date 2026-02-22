@@ -3,6 +3,9 @@ import { AIClient } from '@/ai/client';
 import { PROMPTS } from '@/ai/prompts';
 import { z } from 'zod';
 
+export const runtime = 'edge';
+export const maxDuration = 45;
+
 const rewriteRequestSchema = z.object({
     bullet: z.string().min(5, 'Bullet point is too short to rewrite.'),
 });
