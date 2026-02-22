@@ -38,3 +38,13 @@ export const atsAnalysisSchema = z.object({
 });
 
 export type ATSAnalysis = z.infer<typeof atsAnalysisSchema>;
+
+export const jobMatchSchema = z.object({
+    matchScore: z.number().min(0).max(100).describe('Overall percentage match with the job description'),
+    matchingSkills: z.array(z.string()).describe('Skills found in both resume and JD'),
+    missingSkills: z.array(z.string()).describe('Skills in JD missing from the resume'),
+    keywordGaps: z.array(z.string()).describe('Specific phrases/buzzwords in JD not found in resume'),
+    tailoringSuggestions: z.array(z.string()).describe('Actionable suggestions to tailor the resume to this JD'),
+});
+
+export type JobMatchAnalysis = z.infer<typeof jobMatchSchema>;
