@@ -6,6 +6,7 @@ import { Container } from '@/components/ui/container';
 import { Dashboard } from '@/components/dashboard';
 import { ATSInsights } from '@/components/ats-insights';
 import { JobMatch } from '@/components/job-match';
+import { RewriteEditor } from '@/components/rewrite-editor';
 import { ResumeAnalysis, ATSAnalysis } from '@/ai/schema';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,7 +19,7 @@ export default function AnalyzerPage() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [activeTab, setActiveTab] = useState<'content' | 'ats' | 'jobMatch'>('content');
+    const [activeTab, setActiveTab] = useState<'content' | 'ats' | 'jobMatch' | 'rewrite'>('content');
 
     const handleUploadSuccess = async (file: File) => {
         setIsAnalyzing(true);
@@ -114,21 +115,21 @@ export default function AnalyzerPage() {
 
                     {analysis && atsAnalysis && resumeText && !isAnalyzing && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <div className="flex items-center justify-center space-x-2 bg-muted p-1 rounded-lg w-max mx-auto shadow-sm">
+                            <div className="flex flex-wrap items-center justify-center gap-2 bg-muted p-1 rounded-lg w-fit mx-auto shadow-sm">
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className={cn("px-8 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                    className={cn("px-6 py-2 h-auto text-sm font-medium transition-all rounded-md",
                                         activeTab === 'content' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                                     )}
                                     onClick={() => setActiveTab('content')}
                                 >
-                                    Content Analysis
+                                    Analysis
                                 </Button>
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className={cn("px-8 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                    className={cn("px-6 py-2 h-auto text-sm font-medium transition-all rounded-md",
                                         activeTab === 'ats' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                                     )}
                                     onClick={() => setActiveTab('ats')}
@@ -138,18 +139,29 @@ export default function AnalyzerPage() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className={cn("px-8 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                    className={cn("px-6 py-2 h-auto text-sm font-medium transition-all rounded-md",
                                         activeTab === 'jobMatch' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                                     )}
                                     onClick={() => setActiveTab('jobMatch')}
                                 >
                                     Job Match
                                 </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className={cn("px-6 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                        activeTab === 'rewrite' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                    onClick={() => setActiveTab('rewrite')}
+                                >
+                                    Rewriter
+                                </Button>
                             </div>
 
                             {activeTab === 'content' && <Dashboard analysis={analysis} />}
                             {activeTab === 'ats' && <ATSInsights analysis={atsAnalysis} />}
                             {activeTab === 'jobMatch' && <JobMatch resumeText={resumeText} />}
+                            {activeTab === 'rewrite' && <RewriteEditor />}
                         </div>
                     )}
 
