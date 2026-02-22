@@ -4,18 +4,26 @@ import { useState } from 'react';
 import { ResumeUploader } from '@/components/resume-uploader';
 import { Container } from '@/components/ui/container';
 import { Dashboard } from '@/components/dashboard';
-import { ResumeAnalysis } from '@/ai/schema';
+import { ATSInsights } from '@/components/ats-insights';
+import { ResumeAnalysis, ATSAnalysis } from '@/ai/schema';
 import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export default function AnalyzerPage() {
     const [analysis, setAnalysis] = useState<ResumeAnalysis | null>(null);
+    const [atsAnalysis, setAtsAnalysis] = useState<ATSAnalysis | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const [activeTab, setActiveTab] = useState<'content' | 'ats'>('content');
 
     const handleUploadSuccess = async (file: File) => {
         setIsAnalyzing(true);
         setError(null);
         setAnalysis(null);
+        setAtsAnalysis(null);
+        setActiveTab('content');
 
         try {
             // 1. Parse PDF
@@ -27,25 +35,34 @@ export default function AnalyzerPage() {
                 body: formData,
             });
 
-            if (!parseRes.ok) {
-                throw new Error('Failed to parse resume');
-            }
-
+            if (!parseRes.ok) throw new Error('Failed to parse resume');
             const { text } = await parseRes.json();
 
-            // 2. Analyze
-            const analyzeRes = await fetch('/api/analyze', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text }),
-            });
+            // 2. Analyze Content & ATS concurrently
+            const [analyzeRes, atsRes] = await Promise.all([
+                fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text }),
+                }),
+                fetch('/api/ats', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text }),
+                })
+            ]);
 
-            if (!analyzeRes.ok) {
-                throw new Error('Failed to analyze resume');
+            if (!analyzeRes.ok || !atsRes.ok) {
+                throw new Error('Failed to analyze resume data');
             }
 
-            const data = await analyzeRes.json();
-            setAnalysis(data);
+            const [analyzeData, atsData] = await Promise.all([
+                analyzeRes.json(),
+                atsRes.json()
+            ]);
+
+            setAnalysis(analyzeData);
+            setAtsAnalysis(atsData);
         } catch (err: any) {
             setError(err.message || 'An unexpected error occurred');
         } finally {
@@ -91,8 +108,34 @@ export default function AnalyzerPage() {
                         </div>
                     )}
 
-                    {analysis && !isAnalyzing && (
-                        <Dashboard analysis={analysis} />
+                    {analysis && atsAnalysis && !isAnalyzing && (
+                        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <div className="flex items-center justify-center space-x-2 bg-muted p-1 rounded-lg w-max mx-auto">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className={cn("px-8 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                        activeTab === 'content' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                    onClick={() => setActiveTab('content')}
+                                >
+                                    Content
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className={cn("px-8 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                        activeTab === 'ats' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                    onClick={() => setActiveTab('ats')}
+                                >
+                                    ATS Insights
+                                </Button>
+                            </div>
+
+                            {activeTab === 'content' && <Dashboard analysis={analysis} />}
+                            {activeTab === 'ats' && <ATSInsights analysis={atsAnalysis} />}
+                        </div>
                     )}
 
                 </Container>
