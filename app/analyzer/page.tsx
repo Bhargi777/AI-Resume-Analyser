@@ -5,24 +5,27 @@ import { ResumeUploader } from '@/components/resume-uploader';
 import { Container } from '@/components/ui/container';
 import { Dashboard } from '@/components/dashboard';
 import { ATSInsights } from '@/components/ats-insights';
+import { JobMatch } from '@/components/job-match';
 import { ResumeAnalysis, ATSAnalysis } from '@/ai/schema';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export default function AnalyzerPage() {
+    const [resumeText, setResumeText] = useState<string | null>(null);
     const [analysis, setAnalysis] = useState<ResumeAnalysis | null>(null);
     const [atsAnalysis, setAtsAnalysis] = useState<ATSAnalysis | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [activeTab, setActiveTab] = useState<'content' | 'ats'>('content');
+    const [activeTab, setActiveTab] = useState<'content' | 'ats' | 'jobMatch'>('content');
 
     const handleUploadSuccess = async (file: File) => {
         setIsAnalyzing(true);
         setError(null);
         setAnalysis(null);
         setAtsAnalysis(null);
+        setResumeText(null);
         setActiveTab('content');
 
         try {
@@ -37,6 +40,7 @@ export default function AnalyzerPage() {
 
             if (!parseRes.ok) throw new Error('Failed to parse resume');
             const { text } = await parseRes.json();
+            setResumeText(text);
 
             // 2. Analyze Content & ATS concurrently
             const [analyzeRes, atsRes] = await Promise.all([
@@ -108,9 +112,9 @@ export default function AnalyzerPage() {
                         </div>
                     )}
 
-                    {analysis && atsAnalysis && !isAnalyzing && (
+                    {analysis && atsAnalysis && resumeText && !isAnalyzing && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <div className="flex items-center justify-center space-x-2 bg-muted p-1 rounded-lg w-max mx-auto">
+                            <div className="flex items-center justify-center space-x-2 bg-muted p-1 rounded-lg w-max mx-auto shadow-sm">
                                 <Button
                                     variant="ghost"
                                     size="sm"
@@ -119,7 +123,7 @@ export default function AnalyzerPage() {
                                     )}
                                     onClick={() => setActiveTab('content')}
                                 >
-                                    Content
+                                    Content Analysis
                                 </Button>
                                 <Button
                                     variant="ghost"
@@ -131,10 +135,21 @@ export default function AnalyzerPage() {
                                 >
                                     ATS Insights
                                 </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className={cn("px-8 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                        activeTab === 'jobMatch' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                    onClick={() => setActiveTab('jobMatch')}
+                                >
+                                    Job Match
+                                </Button>
                             </div>
 
                             {activeTab === 'content' && <Dashboard analysis={analysis} />}
                             {activeTab === 'ats' && <ATSInsights analysis={atsAnalysis} />}
+                            {activeTab === 'jobMatch' && <JobMatch resumeText={resumeText} />}
                         </div>
                     )}
 
