@@ -1,16 +1,20 @@
 import { generateObject, generateText } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { atsAnalysisSchema, resumeAnalysisSchema, jobMatchSchema } from './schema';
+
+const google = createGoogleGenerativeAI({
+    apiKey: process.env.GEMINI_API_KEY,
+});
 
 export const AIClient = {
     async analyzeResume(resumeText: string, prompt: string) {
-        if (!process.env.OPENAI_API_KEY) {
-            throw new Error('OPENAI_API_KEY environment variable is not defined');
+        if (!process.env.GEMINI_API_KEY) {
+            throw new Error('GEMINI_API_KEY environment variable is not defined');
         }
 
         try {
             const { object } = await generateObject({
-                model: openai('gpt-4o'),
+                model: google('gemini-1.5-pro-latest'),
                 schema: resumeAnalysisSchema,
                 system: prompt,
                 prompt: `Analyze the following resume text:\n\n${resumeText}`,
@@ -24,13 +28,13 @@ export const AIClient = {
     },
 
     async analyzeATS(resumeText: string, prompt: string) {
-        if (!process.env.OPENAI_API_KEY) {
-            throw new Error('OPENAI_API_KEY environment variable is not defined');
+        if (!process.env.GEMINI_API_KEY) {
+            throw new Error('GEMINI_API_KEY environment variable is not defined');
         }
 
         try {
             const { object } = await generateObject({
-                model: openai('gpt-4o'),
+                model: google('gemini-1.5-pro-latest'),
                 schema: atsAnalysisSchema,
                 system: prompt,
                 prompt: `Analyze the following resume text for ATS compatibility:\n\n${resumeText}`,
@@ -44,13 +48,13 @@ export const AIClient = {
     },
 
     async analyzeJobMatch(resumeText: string, jobDescription: string, prompt: string) {
-        if (!process.env.OPENAI_API_KEY) {
-            throw new Error('OPENAI_API_KEY environment variable is not defined');
+        if (!process.env.GEMINI_API_KEY) {
+            throw new Error('GEMINI_API_KEY environment variable is not defined');
         }
 
         try {
             const { object } = await generateObject({
-                model: openai('gpt-4o'),
+                model: google('gemini-1.5-pro-latest'),
                 schema: jobMatchSchema,
                 system: prompt,
                 prompt: `Compare this Resume to this Job Description.\n\n### RESUME:\n${resumeText}\n\n### JOB DESCRIPTION:\n${jobDescription}`,
@@ -64,13 +68,13 @@ export const AIClient = {
     },
 
     async rewriteBullet(bulletPoint: string, prompt: string) {
-        if (!process.env.OPENAI_API_KEY) {
-            throw new Error('OPENAI_API_KEY environment variable is not defined');
+        if (!process.env.GEMINI_API_KEY) {
+            throw new Error('GEMINI_API_KEY environment variable is not defined');
         }
 
         try {
             const { text } = await generateText({
-                model: openai('gpt-4o'),
+                model: google('gemini-1.5-pro-latest'),
                 system: prompt,
                 prompt: `Rewrite the following bullet point:\n\n${bulletPoint}`,
             });

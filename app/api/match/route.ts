@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
 
         const { resumeText, jobDescription } = result.data;
 
-        if (!process.env.OPENAI_API_KEY) {
-            console.error('Missing OPENAI_API_KEY environment variable');
+        if (!process.env.GEMINI_API_KEY) {
+            console.error('Missing GEMINI_API_KEY environment variable');
             return NextResponse.json(
                 { error: 'Server configuration error' },
                 { status: 500 }
