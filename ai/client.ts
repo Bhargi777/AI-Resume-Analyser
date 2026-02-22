@@ -11,7 +11,7 @@ export const AIClient = {
         try {
             const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { object } = await generateObject({
-                model: google('gemini-1.5-pro-latest'),
+                model: google('gemini-1.5-pro'),
                 schema: comparisonAnalysisSchema,
                 system: prompt,
                 prompt: `Compare these two resumes:\n\n### RESUME A:\n${resumeA}\n\n### RESUME B:\n${resumeB}`,
@@ -31,7 +31,7 @@ export const AIClient = {
         try {
             const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { object } = await generateObject({
-                model: google('gemini-1.5-pro-latest'),
+                model: google('gemini-1.5-pro'),
                 schema: resumeAnalysisSchema,
                 system: prompt,
                 prompt: `Analyze the following resume text:\n\n${resumeText}`,
@@ -52,7 +52,7 @@ export const AIClient = {
         try {
             const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { object } = await generateObject({
-                model: google('gemini-1.5-pro-latest'),
+                model: google('gemini-1.5-pro'),
                 schema: atsAnalysisSchema,
                 system: prompt,
                 prompt: `Analyze the following resume text for ATS compatibility:\n\n${resumeText}`,
@@ -73,7 +73,7 @@ export const AIClient = {
         try {
             const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { object } = await generateObject({
-                model: google('gemini-1.5-pro-latest'),
+                model: google('gemini-1.5-pro'),
                 schema: jobMatchSchema,
                 system: prompt,
                 prompt: `Compare this Resume to this Job Description.\n\n### RESUME:\n${resumeText}\n\n### JOB DESCRIPTION:\n${jobDescription}`,
@@ -94,7 +94,7 @@ export const AIClient = {
         try {
             const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { text } = await generateText({
-                model: google('gemini-1.5-pro-latest'),
+                model: google('gemini-1.5-pro'),
                 system: prompt,
                 prompt: `Rewrite the following bullet point:\n\n${bulletPoint}`,
             });
