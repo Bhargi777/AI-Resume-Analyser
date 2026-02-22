@@ -48,3 +48,15 @@ export const jobMatchSchema = z.object({
 });
 
 export type JobMatchAnalysis = z.infer<typeof jobMatchSchema>;
+
+export const comparisonAnalysisSchema = z.object({
+    resumeAScore: z.number().min(0).max(100),
+    resumeBScore: z.number().min(0).max(100),
+    scoreDelta: z.number(),
+    keyDifferences: z.array(z.string()).describe('Major differences between the two resumes'),
+    strengthsOfA: z.array(z.string()).describe('Unique strengths of Resume A'),
+    strengthsOfB: z.array(z.string()).describe('Unique strengths of Resume B'),
+    recommendation: z.string().describe('Which resume is better for general applications and why'),
+});
+
+export type ComparisonAnalysis = z.infer<typeof comparisonAnalysisSchema>;

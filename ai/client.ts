@@ -1,8 +1,28 @@
 import { generateObject, generateText } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { atsAnalysisSchema, resumeAnalysisSchema, jobMatchSchema } from './schema';
+import { atsAnalysisSchema, resumeAnalysisSchema, jobMatchSchema, comparisonAnalysisSchema } from './schema';
 
 export const AIClient = {
+    async analyzeComparison(resumeA: string, resumeB: string, prompt: string) {
+        if (!process.env.GEMINI_API_KEY) {
+            throw new Error('GEMINI_API_KEY environment variable is not defined');
+        }
+
+        try {
+            const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
+            const { object } = await generateObject({
+                model: google('gemini-1.5-pro-latest'),
+                schema: comparisonAnalysisSchema,
+                system: prompt,
+                prompt: `Compare these two resumes:\n\n### RESUME A:\n${resumeA}\n\n### RESUME B:\n${resumeB}`,
+            });
+
+            return object;
+        } catch (error) {
+            console.error('AI SDK Comparison Error:', error);
+            throw new Error('Failed to generate resume comparison from AI provider');
+        }
+    },
     async analyzeResume(resumeText: string, prompt: string) {
         if (!process.env.GEMINI_API_KEY) {
             throw new Error('GEMINI_API_KEY environment variable is not defined');

@@ -35,5 +35,13 @@ Identify:
 1. The overall match score (0-100%).
 2. Skills/keywords that are present in both the resume and the JD.
 3. Core requirements/skills missing from the resume.
-4. Actionable tips to tailor the resume for this specific role.`
+4. Actionable tips to tailor the resume for this specific role.`,
+
+    RESUME_COMPARE: `You are an expert resume critic.
+Your task is to compare two different versions of a resume (Resume A and Resume B).
+Evaluate both and determine:
+1. Significant differences in content, formatting, and impact.
+2. The specific strengths of each version.
+3. A clear recommendation on which one is more effective for general job applications.
+Output strict JSON matching the requested schema.`
 };

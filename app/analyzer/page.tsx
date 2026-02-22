@@ -8,6 +8,7 @@ import { ATSInsights } from '@/components/ats-insights';
 import { JobMatch } from '@/components/job-match';
 import { RewriteEditor } from '@/components/rewrite-editor';
 import { ReportActions } from '@/components/report-actions';
+import { ResumeComparison } from '@/components/resume-comparison';
 import { ResumeAnalysis, ATSAnalysis } from '@/ai/schema';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,7 +21,7 @@ export default function AnalyzerPage() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [activeTab, setActiveTab] = useState<'content' | 'ats' | 'jobMatch' | 'rewrite'>('content');
+    const [activeTab, setActiveTab] = useState<'content' | 'ats' | 'jobMatch' | 'rewrite' | 'compare'>('content');
 
     const handleUploadSuccess = async (file: File) => {
         setIsAnalyzing(true);
@@ -118,11 +119,11 @@ export default function AnalyzerPage() {
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
 
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 print:hidden">
-                                <div className="flex flex-wrap items-center gap-2 bg-muted p-1 rounded-lg shadow-sm">
+                                <div className="flex flex-wrap items-center gap-1 bg-muted p-1 rounded-lg shadow-sm">
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        className={cn("px-6 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                        className={cn("px-4 py-2 h-auto text-xs font-medium transition-all rounded-md",
                                             activeTab === 'content' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                                         )}
                                         onClick={() => setActiveTab('content')}
@@ -132,7 +133,7 @@ export default function AnalyzerPage() {
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        className={cn("px-6 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                        className={cn("px-4 py-2 h-auto text-xs font-medium transition-all rounded-md",
                                             activeTab === 'ats' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                                         )}
                                         onClick={() => setActiveTab('ats')}
@@ -142,7 +143,7 @@ export default function AnalyzerPage() {
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        className={cn("px-6 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                        className={cn("px-4 py-2 h-auto text-xs font-medium transition-all rounded-md",
                                             activeTab === 'jobMatch' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                                         )}
                                         onClick={() => setActiveTab('jobMatch')}
@@ -152,16 +153,25 @@ export default function AnalyzerPage() {
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        className={cn("px-6 py-2 h-auto text-sm font-medium transition-all rounded-md",
+                                        className={cn("px-4 py-2 h-auto text-xs font-medium transition-all rounded-md",
                                             activeTab === 'rewrite' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                                         )}
                                         onClick={() => setActiveTab('rewrite')}
                                     >
                                         Rewriter
                                     </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className={cn("px-4 py-2 h-auto text-xs font-medium transition-all rounded-md",
+                                            activeTab === 'compare' ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                                        )}
+                                        onClick={() => setActiveTab('compare')}
+                                    >
+                                        Compare
+                                    </Button>
                                 </div>
 
-                                {/* Report Actions for sharing / PDF Export */}
                                 <ReportActions data={{ analysis, atsAnalysis }} />
                             </div>
 
@@ -180,6 +190,7 @@ export default function AnalyzerPage() {
                                 )}
                                 {activeTab === 'jobMatch' && <div className="print:hidden"><JobMatch resumeText={resumeText} /></div>}
                                 {activeTab === 'rewrite' && <div className="print:hidden"><RewriteEditor /></div>}
+                                {activeTab === 'compare' && <div className="print:hidden"><ResumeComparison initialResumeText={resumeText} /></div>}
                             </div>
 
                         </div>
