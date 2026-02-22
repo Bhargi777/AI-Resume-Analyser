@@ -2,10 +2,6 @@ import { generateObject, generateText } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { atsAnalysisSchema, resumeAnalysisSchema, jobMatchSchema } from './schema';
 
-const google = createGoogleGenerativeAI({
-    apiKey: process.env.GEMINI_API_KEY,
-});
-
 export const AIClient = {
     async analyzeResume(resumeText: string, prompt: string) {
         if (!process.env.GEMINI_API_KEY) {
@@ -13,6 +9,7 @@ export const AIClient = {
         }
 
         try {
+            const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { object } = await generateObject({
                 model: google('gemini-1.5-pro-latest'),
                 schema: resumeAnalysisSchema,
@@ -33,6 +30,7 @@ export const AIClient = {
         }
 
         try {
+            const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { object } = await generateObject({
                 model: google('gemini-1.5-pro-latest'),
                 schema: atsAnalysisSchema,
@@ -53,6 +51,7 @@ export const AIClient = {
         }
 
         try {
+            const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { object } = await generateObject({
                 model: google('gemini-1.5-pro-latest'),
                 schema: jobMatchSchema,
@@ -73,6 +72,7 @@ export const AIClient = {
         }
 
         try {
+            const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
             const { text } = await generateText({
                 model: google('gemini-1.5-pro-latest'),
                 system: prompt,
