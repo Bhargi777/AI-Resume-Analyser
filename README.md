@@ -2,8 +2,7 @@
 
 A production-grade AI Resume Analyzer built with Next.js App Router, TypeScript, and Tailwind CSS. The app uses AI to parse resumes, provide ATS insights, match with job descriptions, and suggest bullet rewrites.
 
-## Documentation
-Please refer to the [Product Requirements Document (PRD)](./PRD.md) for detailed information on requirements, architecture, and feature specifications.
+
 
 ## Technologies Used
 - Next.js (App Router)
