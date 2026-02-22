@@ -1,22 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AIClient } from '@/ai/client';
 import { PROMPTS } from '@/ai/prompts';
+import { z } from 'zod';
+
+const analyzeRequestSchema = z.object({
+    text: z.string().min(10, 'Resume text is too short to analyze.'),
+});
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { text } = body;
+        const result = analyzeRequestSchema.safeParse(body);
 
-        if (!text || typeof text !== 'string') {
+        if (!result.success) {
             return NextResponse.json(
-                { error: 'Missing or invalid resume text in request body' },
+                { error: 'Invalid input', details: result.error.errors },
                 { status: 400 }
             );
         }
 
+        const { text } = result.data;
+
         if (!process.env.OPENAI_API_KEY) {
+            console.error('Missing OPENAI_API_KEY environment variable');
             return NextResponse.json(
-                { error: 'Server configuration error: Missing AI API key' },
+                { error: 'Server configuration error' },
                 { status: 500 }
             );
         }
@@ -27,7 +35,7 @@ export async function POST(req: NextRequest) {
     } catch (error) {
         console.error('Analyze API Error:', error);
         return NextResponse.json(
-            { error: 'Failed to analyze resume text.' },
+            { error: 'Failed to analyze resume text. Please try again later.' },
             { status: 500 }
         );
     }
