@@ -23,3 +23,18 @@ export const resumeAnalysisSchema = z.object({
 });
 
 export type ResumeAnalysis = z.infer<typeof resumeAnalysisSchema>;
+
+export const atsAnalysisSchema = z.object({
+    score: z.number().min(0).max(100).describe('Overall ATS parseability score'),
+    parsingIssues: z.array(z.string()).describe('Lists of items that an ATS might fail to parse (e.g. multi-column layouts, graphics)'),
+    formattingRisks: z.array(z.string()).describe('Risks associated with fonts, margins, or file types'),
+    keywordDensity: z.array(
+        z.object({
+            keyword: z.string(),
+            count: z.number(),
+        })
+    ).describe('Important keywords found in the resume and their frequency'),
+    recommendations: z.array(z.string()).describe('Actionable steps to fix ATS issues'),
+});
+
+export type ATSAnalysis = z.infer<typeof atsAnalysisSchema>;

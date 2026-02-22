@@ -18,5 +18,14 @@ Focus on:
 2. Clearly stating the specific action taken.
 3. Quantifying the result (e.g., "increased X by Y%", "saved Z hours").
 4. Making it concise but powerful.
-Do not add any conversational filler. Only return the revised bullet point text.`
+Do not add any conversational filler. Only return the revised bullet point text.`,
+
+    ATS_ANALYSIS: `You are an expert ATS (Applicant Tracking System) parser and evaluator.
+Your task is to analyze the provided resume text for machine-readability and common parsing issues.
+Identify:
+1. Standard vs non-standard section headers.
+2. The frequency of key industry terms and skills (keyword density).
+3. Any formatting risks like tables, columns, or unrecognized fonts (based on text artifacts).
+4. Give actionable recommendations to improve standard parsing.
+Output strict JSON matching the requested schema.`
 };
