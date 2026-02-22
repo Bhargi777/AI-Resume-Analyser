@@ -65,6 +65,70 @@ export default function Home() {
           </Container>
         </section>
 
+        {/* Features Section */}
+        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-secondary/30 flex items-center justify-center">
+          <Container className="px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">Features</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Everything you need to land interviews</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Our advanced AI carefully reviews your resume and compares it to live job descriptions.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
+              <div className="flex flex-col justify-center space-y-4 rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
+                <CheckCircle className="h-12 w-12 text-primary" />
+                <h3 className="text-xl font-bold">Smart ATS Parsing</h3>
+                <p className="text-muted-foreground">Discover exactly how applicant tracking systems read your resume. Identify missing keywords instantly.</p>
+              </div>
+              <div className="flex flex-col justify-center space-y-4 rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
+                <FileText className="h-12 w-12 text-primary" />
+                <h3 className="text-xl font-bold">AI Bullet Rewriting</h3>
+                <p className="text-muted-foreground">Transform weak bullet points into strong, results-oriented achievements using our specialized AI.</p>
+              </div>
+              <div className="flex flex-col justify-center space-y-4 rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
+                <ArrowRight className="h-12 w-12 text-primary" />
+                <h3 className="text-xl font-bold">Job Match Scoring</h3>
+                <p className="text-muted-foreground">Paste a job description and instantly see your match score, including targeted gap analysis.</p>
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* How It Works Section */}
+        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 flex items-center justify-center">
+          <Container className="px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">Simple Process</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">How It Works</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Three simple steps to transform your resume and start getting interviews.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
+              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl font-bold text-primary-foreground">1</div>
+                <h3 className="text-xl font-bold">Upload Resume</h3>
+                <p className="text-muted-foreground">Upload your current PDF resume. Our system extracts and structures your data instantly.</p>
+              </div>
+              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl font-bold text-primary-foreground">2</div>
+                <h3 className="text-xl font-bold">Add Target Job</h3>
+                <p className="text-muted-foreground">Paste the description of the job you want so the AI can run a gap analysis.</p>
+              </div>
+              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl font-bold text-primary-foreground">3</div>
+                <h3 className="text-xl font-bold">Review & Optimize</h3>
+                <p className="text-muted-foreground">Apply AI-driven rewrite suggestions and see your match score increase in real-time.</p>
+              </div>
+            </div>
+          </Container>
+        </section>
+
         {/* CTA Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-secondary flex items-center justify-center">
           <Container className="px-4 md:px-6 text-center">
